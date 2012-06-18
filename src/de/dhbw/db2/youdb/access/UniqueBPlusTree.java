@@ -333,9 +333,14 @@ public class UniqueBPlusTree<T extends AbstractSQLValue> extends AbstractUniqueI
 			int slotNumber = this.binarySearch(key);
 			AbstractRecord leafRecord = UniqueBPlusTree.this.leafRecPrototype.clone();
 			
-			this.indexPage.read(slotNumber, leafRecord);			
+			this.indexPage.read(slotNumber, leafRecord);
 			
-			return leafRecord;
+			
+			SQLInteger slot = (SQLInteger) leafRecord.getValue(SLOT_POS);
+			SQLInteger page = (SQLInteger) leafRecord.getValue(PAGE_POS);
+			
+			
+			return table.lookup(page.getValue(), slot.getValue());
 		}
 		
 		@Override
